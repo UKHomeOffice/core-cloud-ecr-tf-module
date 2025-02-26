@@ -4,7 +4,7 @@ module "ecr" {
 
   for_each = try(var.ecr_config.repo_list, {})
 
-  repository_name = "${var.ecr_config.tenant}/${each.key}"
+  repository_name = "${var.ecr_prefix}/${each.key}"
   repository_type = "private"
 
   create_lifecycle_policy = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, false)

@@ -1,6 +1,7 @@
 module "ecr_repos" {
   source = "../"
-
+  
+  ecr_prefix = "example-tenant"
   ecr_config = yamldecode(file("./example_repos.yaml"))
 
   tags = {

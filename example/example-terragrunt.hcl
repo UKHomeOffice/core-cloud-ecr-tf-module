@@ -3,7 +3,8 @@ terraform {
 }
 
 inputs = {
-  association_config = yamldecode(file("./example_repos.yaml"))
+  ecr_prefix = "example-tenant"
+  ecr_config = yamldecode(file("./example_repos.yaml"))
 
   tags = {
     cost-centre = "..."

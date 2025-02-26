@@ -7,9 +7,10 @@ You may set common options and override them on a per-repository basis with an e
 
 Lambda ARNS must be declared in a separate list that can only be defined at a per-repository level. This adds additional permissions that allow Lambda to access ECR repositories to use as a runtime container.
 
+ecr_prefix must be provided. This is to provide some logical separation of ECR repositories. This should typically be the name of the tenant or team.
+
 ## Expected YAML config with Explanations
 ```
-tenant: <TENANT NAME> #This is used as a prefix for your ECR repo. i.e. <prefix>/<repo name>
 common_options: # These are common options that can be re-used by all of your ECR repositories
   create_lifecycle_policy: true # Defaults to false. If set to true you will need to specify repository_lifecycle_policy - this is done via filepath to a json file
   repository_lifecycle_policy: ./policies/example_common_repo_lifecycle_policy.json
@@ -90,7 +91,8 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ecr_config"></a> [ecr\_config](#input\_ecr\_config) | PAth to YAML file that contains ECR repositories | `any` | n/a | yes |
+| <a name="input_ecr_config"></a> [ecr\_config](#input\_ecr\_config) | Path to YAML file that contains ECR repositories | `any` | n/a | yes |
+| <a name="input_ecr_prefix"></a> [ecr\_prefix](#input\_ecr\_prefix) | This is used to provide logical separation of ECR repositories. This will most likely be the name of the tenant or team | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
 
 ## Outputs
