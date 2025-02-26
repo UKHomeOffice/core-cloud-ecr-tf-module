@@ -35,7 +35,10 @@ common_options: # These are common options that can be re-used by all of your EC
       - "ecr:GetRepositoryPolicy"
       - "ecr:ListImages"
       - "ecr:ListTagsForResource"
-      resources: ["*"]
+      principals:
+        wildcard:
+          type: "*"
+          identifiers: ["*"]
       effect: Allow
       conditions:
       - orgMatch:
