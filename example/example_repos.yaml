@@ -1,4 +1,3 @@
-tenant: <TENANT NAME> #This is used as a prefix for your ECR repo. i.e. <prefix>/<repo name>
 common_options: # These are common options that can be re-used by all of your ECR repositories
   create_lifecycle_policy: true # Defaults to false. If set to true you will need to specify repository_lifecycle_policy - this is done via filepath to a json file
   repository_lifecycle_policy: ./policies/example_common_repo_lifecycle_policy.json
@@ -24,8 +23,10 @@ common_options: # These are common options that can be re-used by all of your EC
       - "ecr:GetRepositoryPolicy"
       - "ecr:ListImages"
       - "ecr:ListTagsForResource"
-      resources: ["*"]
-      effect: Allow
+      principals:
+        wildcard:
+          type: "*"
+          identifiers: ["*"]
       conditions:
       - orgMatch:
         test: "StringLike"
