@@ -12,18 +12,7 @@ updates:
       - "dependencies"
       - "patch"
   - package-ecosystem: "terraform"
-    directory: "/stateful"
-    schedule:
-      interval: "daily"
-    commit-message:
-      prefix: "(TF)"
-    reviewers:
-      - "UKHomeOffice/core-cloud-devops"
-    labels:
-      - "dependencies"
-      - "patch"
-  - package-ecosystem: "terraform"
-    directory: "/stateless"
+    directory: "/"
     schedule:
       interval: "daily"
     commit-message:
