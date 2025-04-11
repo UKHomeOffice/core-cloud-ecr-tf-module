@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: core-cloud-ecr-tf-module
+  annotations:
+    github.com/project-slug: UKHomeOffice/core-cloud-ecr-tf-module
+spec:
+  type: service
+  owner: core-cloud-devops
+  lifecycle: experimental
+  system: core-cloud
