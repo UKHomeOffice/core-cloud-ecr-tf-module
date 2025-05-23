@@ -9,6 +9,13 @@ Lambda ARNS must be declared in a separate list that can only be defined at a pe
 
 ecr_prefix must be provided. This is to provide some logical separation of ECR repositories. This should typically be the name of the tenant or team.
 
+# ECR Repository Name
+To avoid compatibility issues with ArgoCD not supporting ECR "Namespaces" e.g. `/ (team1/nginx)` we will be disallowing the use of forward slashes. This module will convert these to hyphens.
+
+This is due to the way ArgoCD handles ECR credentials for HELM and this might be re-visited when it's resolved. For now we will only be creating "flat" ECR repositories
+
+Also, prefixes, suffixes and ecr repo names cannot begin or end with hyphens '-'. These will be trimmed off
+
 ## Expected YAML config with Explanations
 ```
 common_options: # These are common options that can be re-used by all of your ECR repositories
@@ -81,7 +88,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 2.3.1 |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 2.4.0 |
 
 ## Resources
 
@@ -92,7 +99,8 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_config"></a> [ecr\_config](#input\_ecr\_config) | Path to YAML file that contains ECR repositories | `any` | n/a | yes |
-| <a name="input_ecr_prefix"></a> [ecr\_prefix](#input\_ecr\_prefix) | This is used to provide logical separation of ECR repositories. This will most likely be the name of the tenant or team | `string` | n/a | yes |
+| <a name="input_ecr_prefix"></a> [ecr\_prefix](#input\_ecr\_prefix) | This is used to provide logical separation of ECR repositories. This will most likely be the name of the tenant or team | `string` | `null` | no |
+| <a name="input_ecr_suffix"></a> [ecr\_suffix](#input\_ecr\_suffix) | This can be optionally used to help to quickly identify what a given ECR repository is used for. E.g. helm (example-helm) | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
 
 ## Outputs
