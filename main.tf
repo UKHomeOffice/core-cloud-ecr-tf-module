@@ -25,5 +25,5 @@ module "ecr" {
   repository_policy_statements       = try(each.value.repository_policy_statements, var.ecr_config.common_options.repository_policy_statements, {})
   repository_lifecycle_policy        = try(file(each.value.repository_lifecycle_policy), file(var.ecr_config.common_options.repository_lifecycle_policy), null)
 
-  tags = var.tags
+  tags = merge(var.tags, try(var.ecr_config.common_options.tags, {}), try(var.ecr_config.common_options.tags, {}), try(each.value.tags, {}))
 }
