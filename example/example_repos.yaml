@@ -1,4 +1,10 @@
 common_options: # These are common options that can be re-used by all of your ECR repositories
+  tags:
+    cost-centre: "..."
+    finance-account-id: "..."
+    portfolio-id: "..."
+    project-id: "..."
+    service-id: "..."
   create_lifecycle_policy: true # Defaults to false. If set to true you will need to specify repository_lifecycle_policy - this is done via filepath to a json file
   repository_lifecycle_policy: ./policies/example_common_repo_lifecycle_policy.json
   repository_read_write_access_arns: # These are sets of ARNs that are allowed READ WRITE access to your ECR Repo
@@ -38,6 +44,9 @@ common_options: # These are common options that can be re-used by all of your EC
 repo_list: # This is where you will define your list of ECR repositories as keys. This can be done as `key: `or `key: ~` if there are no changes from the common options
   hello-world:
   foo-bar:
+    tags:
+      project-id: "..."
+      service-id: "..."
   custom-oci:
     repository_read_write_access_arns: # You can override the common options
       - arn:aws:iam::<ACCOUNT_3>:root
