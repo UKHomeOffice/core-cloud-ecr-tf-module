@@ -5,7 +5,7 @@ locals {
 
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "2.4.0"
+  version = "3.1.0"
 
   for_each = try(var.ecr_config.repo_list, {})
 
