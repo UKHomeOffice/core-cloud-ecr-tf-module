@@ -2,6 +2,11 @@ locals {
   trimmed_ecr_prefix = try(trim(var.ecr_prefix, "- "), null)
 }
 
+data "aws_kms_key" "this" {
+  count  = var.repo_kms_key ? 1 : 0
+  key_id = var.repo_kms_key
+}
+
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
   version = "3.2.0"
@@ -12,7 +17,7 @@ module "ecr" {
   repository_type = "private"
 
   repository_encryption_type = var.repo_encryption_type
-  repository_kms_key         = var.repo_kms_key
+  repository_kms_key         = var.repo_kms_key != null ?  data.aws_kms_key.this[0].arn : null
 
   create_lifecycle_policy = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, false)
 
