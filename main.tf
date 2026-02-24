@@ -1,21 +1,18 @@
 locals {
   trimmed_ecr_prefix = try(trim(var.ecr_prefix, "- "), null)
-  trimmed_ecr_suffix = try(trim(var.ecr_suffix, "- "), null)
 }
 
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "2.4.0"
+  version = "3.2.0"
 
   for_each = try(var.ecr_config.repo_list, {})
 
-  repository_name = replace((
-    local.trimmed_ecr_prefix == null ?
-    (local.trimmed_ecr_suffix == null ? "${trim(each.key, "- ")}" : "${trim(each.key, "- ")}-${local.trimmed_ecr_suffix}") :
-    (local.trimmed_ecr_suffix == null ? "${local.trimmed_ecr_prefix}-${trim(each.key, "- ")}" : "${local.trimmed_ecr_prefix}-${trim(each.key, "- ")}-${local.trimmed_ecr_suffix}")
-  ), "/", "-")
-
+  repository_name = local.trimmed_ecr_prefix == null ? try(trim("${each.key}", "- "), null) : "${local.trimmed_ecr_prefix}/${trim(each.key, "- ")}"
   repository_type = "private"
+
+  repository_encryption_type = var.repo_encryption_type
+  repository_kms_key         = var.repo_kms_key
 
   create_lifecycle_policy = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, false)
 

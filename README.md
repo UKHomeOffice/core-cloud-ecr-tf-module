@@ -7,14 +7,14 @@ You may set common options and override them on a per-repository basis with an e
 
 Lambda ARNS must be declared in a separate list that can only be defined at a per-repository level. This adds additional permissions that allow Lambda to access ECR repositories to use as a runtime container.
 
-ecr_prefix must be provided. This is to provide some logical separation of ECR repositories. This should typically be the name of the tenant or team.
+ecr_prefix should be provided. This is to provide some logical separation of ECR repositories. This should typically be the name of the tenant or team.
 
 # ECR Repository Name
 To avoid compatibility issues with ArgoCD not supporting ECR "Namespaces" e.g. `/ (team1/nginx)` we will be disallowing the use of forward slashes. This module will convert these to hyphens.
 
 This is due to the way ArgoCD handles ECR credentials for HELM and this might be re-visited when it's resolved. For now we will only be creating "flat" ECR repositories
 
-Also, prefixes, suffixes and ecr repo names cannot begin or end with hyphens '-'. These will be trimmed off
+Also, prefixes and ecr repo names cannot begin or end with hyphens '-'. These will be trimmed off
 
 ## Expected YAML config with Explanations
 ```
@@ -88,7 +88,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 2.4.0 |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | 3.2.0 |
 
 ## Resources
 
@@ -100,10 +100,13 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_config"></a> [ecr\_config](#input\_ecr\_config) | Path to YAML file that contains ECR repositories | `any` | n/a | yes |
 | <a name="input_ecr_prefix"></a> [ecr\_prefix](#input\_ecr\_prefix) | This is used to provide logical separation of ECR repositories. This will most likely be the name of the tenant or team | `string` | `null` | no |
-| <a name="input_ecr_suffix"></a> [ecr\_suffix](#input\_ecr\_suffix) | This can be optionally used to help to quickly identify what a given ECR repository is used for. E.g. helm (example-helm) | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
+| <a name="input_repo_encryption_type"></a> [repo\_encryption\_type](#input\_repo\_encryption\_type) | The encryption type to use for your repos. KMS or AES256 - Default is AES256 | `string` | `"AES256"` | no |
+| <a name="input_repo_kms_key"></a> [repo\_kms\_key](#input\_repo\_kms\_key) | If KMS is selected you may optionally specify a CMK, leaving this blank will use the AWS default managed KMS key | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of tags for resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_repo_info"></a> [repo\_info](#output\_repo\_info) | Information on the ECR repositories |
 <!-- END_TF_DOCS -->
