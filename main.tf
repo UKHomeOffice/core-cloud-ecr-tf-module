@@ -3,7 +3,7 @@ locals {
 }
 
 data "aws_kms_key" "this" {
-  count  = var.repo_kms_key ? 1 : 0
+  count  = var.repo_kms_key == null ? 0 : 1
   key_id = var.repo_kms_key
 }
 
@@ -17,7 +17,7 @@ module "ecr" {
   repository_type = "private"
 
   repository_encryption_type = var.repo_encryption_type
-  repository_kms_key         = var.repo_kms_key != null ?  data.aws_kms_key.this[0].arn : null
+  repository_kms_key         = try((var.repo_kms_key == null ? null : data.aws_kms_key.this[0].arn), null)
 
   create_lifecycle_policy = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, false)
 
