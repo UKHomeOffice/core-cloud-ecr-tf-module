@@ -100,7 +100,9 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_config"></a> [ecr\_config](#input\_ecr\_config) | Path to YAML file that contains ECR repositories | `any` | n/a | yes |
 | <a name="input_ecr_prefix"></a> [ecr\_prefix](#input\_ecr\_prefix) | This is used to provide logical separation of ECR repositories. This will most likely be the name of the tenant or team | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | `{}` | no |
+| <a name="input_repo_encryption_type"></a> [repo\_encryption\_type](#input\_repo\_encryption\_type) | The encryption type to use for your repos. KMS or AES256 - Default is AES256 | `string` | `"AES256"` | no |
+| <a name="input_repo_kms_key"></a> [repo\_kms\_key](#input\_repo\_kms\_key) | If KMS is selected you may optionally specify a CMK, leaving this blank will use the AWS default managed KMS key | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of tags for resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

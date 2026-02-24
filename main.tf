@@ -9,8 +9,10 @@ module "ecr" {
   for_each = try(var.ecr_config.repo_list, {})
 
   repository_name = local.trimmed_ecr_prefix == null ? try(trim("${each.key}", "- "), null) : "${local.trimmed_ecr_prefix}/${trim(each.key, "- ")}"
-
   repository_type = "private"
+
+  repository_encryption_type = var.repo_encryption_type
+  repository_kms_key         = var.repo_kms_key
 
   create_lifecycle_policy = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, false)
 
