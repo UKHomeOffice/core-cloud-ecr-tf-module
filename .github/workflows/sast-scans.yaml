@@ -23,7 +23,7 @@ permissions:
 jobs:
   checkov-scan:
     # uses: UKHomeOffice/core-cloud-workflow-checkov-sast-scan/.github/workflows/checkov-scan-tfplan.yaml@1.11.1
-    uses: UKHomeOffice/core-cloud-workflow-checkov-sast-scan/.github/workflows/checkov-scan-tfplan.yaml@2d225e4e2ee6e9c7645667f1721b4c406dda6ccf
+    uses: UKHomeOffice/core-cloud-workflow-checkov-sast-scan/.github/workflows/checkov-scan-tfplan.yaml@f514754d452759b473de7221f084ad11ab686cd8
     with:
       path: '.'
   sonarqube-scanner:
