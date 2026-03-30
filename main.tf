@@ -26,81 +26,23 @@ module "ecr" {
 
   # Default Life Cycle settings - latest tag by default is the only mutable tag
   create_lifecycle_policy     = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, true)
-  repository_lifecycle_policy = try(file(each.value.repository_lifecycle_policy), file(var.ecr_config.common_options.repository_lifecycle_policy), <<-EOT
-  {
-    "rules": [
+  repository_lifecycle_policy = try(file(each.value.repository_lifecycle_policy), file(var.ecr_config.common_options.repository_lifecycle_policy), jsonencode({
+    rules = [
       {
-        "rulePriority": 10,
-        "description": "Never expire the latest tag",
-        "selection": {
-          "tagStatus": "tagged",
-          "tagPrefixList": ["latest"],
-          "countType": "imageCountMoreThan",
-          "countNumber": 9999
+        rulePriority = 1,
+        description  = "Keep last 30 images",
+        selection = {
+          tagStatus     = "tagged",
+          tagPrefixList = ["v"],
+          countType     = "imageCountMoreThan",
+          countNumber   = 30
         },
-        "action": {
-          "type": "expire"
-        }
-      },
-      {
-        "rulePriority": 20,
-        "description": "Expire untagged artefacts after 7 days",
-        "selection": {
-          "tagStatus": "untagged",
-          "countType": "sinceImagePushed",
-          "countUnit": "days",
-          "countNumber": 7
-        },
-        "action": {
-          "type": "expire"
-        }
-      },
-      {
-        "rulePriority": 30,
-        "description": "keep the latest 30 tags before archiving them",
-        "selection": {
-          "tagStatus": "tagged",
-          "tagPrefixList": [""],
-          "countType": "imageCountMoreThan",
-          "countNumber": 30
-        },
-        "action": {
-          "type": "transition",
-          "targetStorageClass": "archive"
-        }
-      },
-      {
-        "rulePriority": 40,
-        "description": "Archive artefacts that have not been pulled within 30 days",
-        "selection": {
-          "tagStatus": "any",
-          "countType": "sinceLastPulled",
-          "countUnit": "days",
-          "countNumber": 30
-        },
-        "action": {
-          "type": "transition",
-          "targetStorageClass": "archive"
-        }
-      },
-      {
-        "rulePriority": 50,
-        "description": "Expire tags archived for more than 365 days",
-        "selection": {
-          "tagStatus": "any",
-          "storageClass": "archive",
-          "countType": "sinceImageTransitioned",
-          "countUnit": "days",
-          "countNumber": 365
-        },
-        "action": {
-          "type": "expire"
+        action = {
+          type = "expire"
         }
       }
     ]
-  }
-  EOT
-  )
+  }))
 
   # Default Immutability settings - latest tag by default is the only mutable tag
   repository_image_tag_mutability = try(each.value.repository_image_tag_mutability, var.ecr_config.common_options.repository_image_tag_mutability, "IMMUTABLE_WITH_EXCLUSION")
