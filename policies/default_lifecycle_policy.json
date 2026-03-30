@@ -31,7 +31,7 @@
       "description": "keep the latest 30 tags before archiving them",
       "selection": {
         "tagStatus": "tagged",
-        "tagPrefixList": ["*"],
+        "tagPatternList": ["*"],
         "countType": "imageCountMoreThan",
         "countNumber": 30
       },
@@ -45,7 +45,7 @@
       "description": "Archive artefacts that have not been pulled within 30 days",
       "selection": {
         "tagStatus": "any",
-        "countType": "sinceLastPulled",
+        "countType": "sinceImagePulled",
         "countUnit": "days",
         "countNumber": 30
       },
@@ -59,10 +59,10 @@
       "description": "Expire tags archived for more than 365 days",
       "selection": {
         "tagStatus": "any",
-        "storageClass": "archive",
         "countType": "sinceImageTransitioned",
         "countUnit": "days",
-        "countNumber": 365
+        "countNumber": 365,
+        "storageClass": "archive"
       },
       "action": {
         "type": "expire"
