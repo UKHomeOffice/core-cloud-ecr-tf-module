@@ -19,7 +19,7 @@ Also, prefixes and ecr repo names cannot begin or end with hyphens '-'. These wi
 ## Expected YAML config with Explanations
 ```
 common_options: # These are common options that can be re-used by all of your ECR repositories
-  create_lifecycle_policy: true # Defaults to false. If set to true you will need to specify repository_lifecycle_policy - this is done via filepath to a json file
+  create_lifecycle_policy: true # This is a default, a default lifecycle policy (`./policies/default_lifecycle_policy.json`) will be applied unless you specify your own under option repository_lifecycle_policy.
   repository_lifecycle_policy: ./policies/example_common_repo_lifecycle_policy.json
   repository_read_write_access_arns: # These are sets of ARNs that are allowed READ WRITE access to your ECR Repo
     - arn:aws:iam::<ACCOUNT>:root
@@ -55,10 +55,20 @@ common_options: # These are common options that can be re-used by all of your EC
         values:
         - o-<ORG-ID>
         - ...
+  repository_image_tag_mutability: IMMUTABLE_WITH_EXCLUSION #This is the default and can be set to the following: MUTABLE | MUTABLE_WITH_EXCLUSION | IMMUTABLE | IMMUTABLE_WITH_EXCLUSION
+  repository_image_tag_mutability_exclusion_filter: |-
+    [
+      {
+        filter      = "latest"
+        filter_type = "WILDCARD"
+      }
+    ]
+  # This is the current default assuming that `repository_image_tag_mutability` is set to `IMMUTABLE_WITH_EXCLUSION`, by default only the tag 'latest' is mutable.
 
 repo_list: # This is where you will define your list of ECR repositories as keys. This can be done as `key: `or `key: ~` if there are no changes from the common options
   hello-world:
   foo-bar:
+    repository_lifecycle_policy: ./policies/example_specific_lifecycle_policy.json # You may specify a specific lifecycle policy for a given repo if it needs to be treated differently.
   custom-oci:
     repository_read_write_access_arns: # You can override the common options
       - arn:aws:iam::<ACCOUNT_3>:root

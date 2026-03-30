@@ -5,8 +5,6 @@ common_options: # These are common options that can be re-used by all of your EC
     portfolio-id: "..."
     project-id: "..."
     service-id: "..."
-  create_lifecycle_policy: true # Defaults to false. If set to true you will need to specify repository_lifecycle_policy - this is done via filepath to a json file
-  repository_lifecycle_policy: ./policies/example_common_repo_lifecycle_policy.json
   repository_read_write_access_arns: # These are sets of ARNs that are allowed READ WRITE access to your ECR Repo
     - arn:aws:iam::<ACCOUNT>:root
     - ...
