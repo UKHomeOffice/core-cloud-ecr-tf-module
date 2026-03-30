@@ -31,7 +31,7 @@
       "description": "keep the latest 30 tags before archiving them",
       "selection": {
         "tagStatus": "tagged",
-        "tagPrefixList": [""],
+        "tagPrefixList": ["*"],
         "countType": "imageCountMoreThan",
         "countNumber": 30
       },

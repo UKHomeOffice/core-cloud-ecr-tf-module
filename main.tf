@@ -26,23 +26,7 @@ module "ecr" {
 
   # Default Life Cycle settings - latest tag by default is the only mutable tag
   create_lifecycle_policy     = try(each.value.create_lifecycle_policy, var.ecr_config.common_options.create_lifecycle_policy, true)
-  repository_lifecycle_policy = try(file(each.value.repository_lifecycle_policy), file(var.ecr_config.common_options.repository_lifecycle_policy), jsonencode({
-    rules = [
-      {
-        rulePriority = 1,
-        description  = "Keep last 30 images",
-        selection = {
-          tagStatus     = "tagged",
-          tagPrefixList = ["v"],
-          countType     = "imageCountMoreThan",
-          countNumber   = 30
-        },
-        action = {
-          type = "expire"
-        }
-      }
-    ]
-  }))
+  repository_lifecycle_policy = try(file(each.value.repository_lifecycle_policy), file(var.ecr_config.common_options.repository_lifecycle_policy), file("${path.module}/policies/default_lifecycle_policy.json"))
 
   # Default Immutability settings - latest tag by default is the only mutable tag
   repository_image_tag_mutability = try(each.value.repository_image_tag_mutability, var.ecr_config.common_options.repository_image_tag_mutability, "IMMUTABLE_WITH_EXCLUSION")
