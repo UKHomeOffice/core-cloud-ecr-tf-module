@@ -1,0 +1,72 @@
+{
+  "rules": [
+    {
+      "rulePriority": 10,
+      "description": "Never expire the latest tag",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPrefixList": ["latest"],
+        "countType": "imageCountMoreThan",
+        "countNumber": 9999
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 20,
+      "description": "Expire untagged artefacts after 7 days",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 7
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 30,
+      "description": "keep the latest 30 tags before archiving them",
+      "selection": {
+        "tagStatus": "tagged",
+        "tagPatternList": ["*"],
+        "countType": "imageCountMoreThan",
+        "countNumber": 30
+      },
+      "action": {
+        "type": "transition",
+        "targetStorageClass": "archive"
+      }
+    },
+    {
+      "rulePriority": 40,
+      "description": "Archive artefacts that have not been pulled within 30 days",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "sinceImagePulled",
+        "countUnit": "days",
+        "countNumber": 30
+      },
+      "action": {
+        "type": "transition",
+        "targetStorageClass": "archive"
+      }
+    },
+    {
+      "rulePriority": 50,
+      "description": "Expire tags archived for more than 365 days",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "sinceImageTransitioned",
+        "countUnit": "days",
+        "countNumber": 365,
+        "storageClass": "archive"
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
